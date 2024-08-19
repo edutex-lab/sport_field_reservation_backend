@@ -1,0 +1,44 @@
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Activates the workflow; then there is a push to the main or master branch
+  push:
+    branches: [main, master]
+
+  # allows you to manually execute this pipeline from the Actions tab.
+  workflow_dispatch:
+
+# A workflow run consists of one or more jobs that can be executed either sequentially or concurrently.
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: self-hosted
+    env:
+      DEFAULT_AVA_PATH: ${{ vars.DEFAULT_AVA_PATH }}
+    #
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+      - run: pip install -r requirements.txt  # install requirements to enable GitHub run tests
+
+  test:
+    runs-on: self-hosted
+    needs: build
+    env:
+        DB_USER_: ${{ vars.DB_USER_ }}
+        DB_PASSWORD_: ${{ vars.DB_PASSWORD_ }}
+        DB_NAME_: ${{ vars.DB_NAME_ }}
+        DB_HOST_: ${{ vars.DB_HOST_ }}
+        DEFAULT_AVA_PATH: ${{ vars.DEFAULT_AVA_PATH }}
+        UPLOAD_FOLDER_PAYMENT: ${{ vars.UPLOAD_FOLDER_PAYMENT }}
+        UPLOAD_FOLDER_ALBUM: ${{ vars.UPLOAD_FOLDER_ALBUM }}
+        BASE_URL_IMAGE: ${{ vars.BASE_URL_IMAGE }}
+        FOLDER_QR: ${{ vars.FOLDER_QR }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+      - run: pip install -r requirements.txt
+      - run: pytest

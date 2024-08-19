@@ -1,0 +1,6152 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "API Documentation Field Reservation System",
+    "description": "by Rofif Fairuz Hawary\n\nLast Updated: 11/07/2024 14:21:XX",
+    "contact": {
+      "email": "rofifhawary@gmail.com"
+    },
+    "version": "1.7.24"
+  },
+  "externalDocs": {
+    "description": "Github repository of this project",
+    "url": "https://github.com/fairofif/sport_fields_reservation_api"
+  },
+  "servers": [
+    {
+      "url": "http://rofif.my.id/"
+    },
+    {
+      "url": "http://localhost:5000/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "device",
+      "description": "Everything about device API"
+    },
+    {
+      "name": "player",
+      "description": "Everything about your Player AUTH API"
+    },
+    {
+      "name": "admin",
+      "description": "Everything about your Admin AUTH API"
+    },
+    {
+      "name": "relogintoken",
+      "description": "relogin token for admin and player"
+    },
+    {
+      "name": "userProfile",
+      "description": "Routes that related to user profile"
+    },
+    {
+      "name": "sportKind",
+      "description": "Everything about sport kind API"
+    },
+    {
+      "name": "sportVenue",
+      "description": "Everything about sport venues management (admin)"
+    },
+    {
+      "name": "playerVenueInfo",
+      "description": "Everything about Venue Information (listing to details) from user player"
+    },
+    {
+      "name": "playerBooking",
+      "description": "Routes that related to Reservation/Booking Player"
+    },
+    {
+      "name": "adminBooking",
+      "description": "Routes that related to Reservation/Booking Processing Admin"
+    },
+    {
+      "name": "memberManagement",
+      "description": "Routes that related to Member/Player management in a reservation"
+    },
+    {
+      "name": "venueControlSystem",
+      "description": "Routes that related to control system in a venue"
+    },
+    {
+      "name": "matchHistory",
+      "description": "Routes that related to match history"
+    },
+    {
+      "name": "playerChat",
+      "description": "Routes that related to player chat with admin venue"
+    }
+  ],
+  "paths": {
+    "/device/register": {
+      "post": {
+        "tags": [
+          "device"
+        ],
+        "summary": "Register new device to DB",
+        "description": "Get new virtual device id when opening app for the first time",
+        "operationId": "registerDevice",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceRegisterResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/device/delete": {
+      "delete": {
+        "tags": [
+          "device"
+        ],
+        "summary": "Delete device id from register app",
+        "description": "Delete virtual_device_id from DB when app uninstalled",
+        "operationId": "deleteDevice",
+        "requestBody": {
+          "description": "Deleted device_id",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeviceDeleteBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceDeleteResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/player/auth/register": {
+      "post": {
+        "tags": [
+          "player"
+        ],
+        "summary": "Register user Player",
+        "description": "Register user Player",
+        "operationId": "registerPlayer",
+        "requestBody": {
+          "description": "Created user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlayerRegisterBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerRegisterResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/player/auth/login": {
+      "post": {
+        "tags": [
+          "player"
+        ],
+        "summary": "Login user Player",
+        "description": "Login user Player",
+        "operationId": "loginPlayer",
+        "requestBody": {
+          "description": "Login user Player",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlayerLoginBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerLoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/player/auth/logout": {
+      "delete": {
+        "tags": [
+          "player"
+        ],
+        "summary": "Logout session user player on used device",
+        "description": "Would delete row in Player_Login_Token on device that used",
+        "operationId": "logoutPlayer",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerLogoutResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/admin/auth/register": {
+      "post": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Register user Admin",
+        "description": "Register user Admin",
+        "operationId": "registerAdmin",
+        "requestBody": {
+          "description": "Created user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminRegisterBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminRegisterResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/admin/auth/login": {
+      "post": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Login user Admin",
+        "description": "Login user Admin",
+        "operationId": "loginAdmin",
+        "requestBody": {
+          "description": "Login user Admin",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminLoginBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminLoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/auth/relogin": {
+      "get": {
+        "tags": [
+          "relogintoken"
+        ],
+        "summary": "Relogin when opening app again for user Admin and Player",
+        "description": "Relogin user Admin and Player",
+        "operationId": "relogin",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReloginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/admin/auth/logout": {
+      "delete": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Logout session user admin on used device",
+        "description": "Would delete row in Admin_Login_Token on device that used",
+        "operationId": "logoutAdmin",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminLogoutResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/admin/sportVenue/register": {
+      "post": {
+        "tags": [
+          "sportVenue"
+        ],
+        "summary": "Register managed sport venue by admin",
+        "description": "Register managed sport venue by admin",
+        "operationId": "registerSportVenue",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Created user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminRegisterVenueBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminRegisterVenueResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/admin/sportVenue": {
+      "get": {
+        "tags": [
+          "sportVenue"
+        ],
+        "summary": "Get managed sport venue by admin",
+        "description": "Get managed sport venue by admin",
+        "operationId": "getSportVenue",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminGetVenueResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/admin/sportVenue/{venue_id}": {
+      "get": {
+        "tags": [
+          "sportVenue"
+        ],
+        "summary": "Get detailed sport venue admin by venue_id",
+        "description": "",
+        "operationId": "getSportVenueDetail",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "venue_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminGetVenueDetailResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "sportVenue"
+        ],
+        "summary": "Delete Venue by id",
+        "description": "",
+        "operationId": "deleteSportVenue",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "venue_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminDeleteVenueResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/admin/sportVenue/edit": {
+      "put": {
+        "tags": [
+          "sportVenue"
+        ],
+        "summary": "Edit managed sport venue by admin",
+        "description": "Edit managed sport venue by admin",
+        "operationId": "EditSportVenue",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "id = Venue id yang mau diedit, sisanya adalah field editable, Field yang ga mau diedit dikasih nilai null aja (kecuali id)",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminEditVenueBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminEditVenueResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/admin/sportVenue/fields/{Sport_Venue_id}": {
+      "get": {
+        "tags": [
+          "sportVenue"
+        ],
+        "summary": "Get List field from managed sport venue by admin",
+        "description": "Get List field from managed sport venue by admin",
+        "operationId": "getFieldFromSportVenue",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Sport_Venue_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminGetFieldFromVenueResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/admin/sportVenue/fields/add": {
+      "post": {
+        "tags": [
+          "sportVenue"
+        ],
+        "summary": "Add field to managed sport venue by admin",
+        "description": "Add field tor managed sport venue by admin",
+        "operationId": "addFieldToSportVenue",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Created user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminAddFieldToVenueBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminAddFieldToVenueResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/admin/sportVenue/fields/delete": {
+      "delete": {
+        "tags": [
+          "sportVenue"
+        ],
+        "summary": "Delete a field from managed sport venue by admin",
+        "description": "Delete a field from managed sport venue by admin",
+        "operationId": "deleteFieldFromSportVenue",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Created user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminDeleteFieldFromVenueBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminDeleteFieldFromVenueResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/admin/sportVenue/fields/schedule/blacklist/{field_id}/{month}/{year}": {
+      "get": {
+        "tags": [
+          "sportVenue"
+        ],
+        "summary": "Get Blacklisted schedule in a month (with parameter year and month)",
+        "description": "Get Blacklisted schedule in a month (with parameter year and month)",
+        "operationId": "getBlacklistSchedule",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "field_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminGetBlacklistScheduleResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/admin/sportVenue/fields/schedule/reservation/{field_id}/{month}/{year}": {
+      "get": {
+        "tags": [
+          "sportVenue"
+        ],
+        "summary": "Get Reservation schedule in a month (with parameter year and month)",
+        "description": "Get Reservation schedule in a month (with parameter year and month)",
+        "operationId": "getReservationSchedule",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "field_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetReservationScheduleFieldsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/admin/sportVenue/fields/schedule/blacklist": {
+      "post": {
+        "tags": [
+          "sportVenue"
+        ],
+        "summary": "Blacklist a field date and time from managed Venue",
+        "description": "Blacklist a field date and time from managed Venue",
+        "operationId": "addBlacklistSchedule",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Created user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminAddBlacklistScheduleBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminAddBlacklistScheduleResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "sportVenue"
+        ],
+        "summary": "Delete Blacklist Schedule with blacklist_id",
+        "description": "Delete Blacklist Schedule with blacklist_id",
+        "operationId": "deleteBlacklistSchedule",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Created user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminDeleteBlacklistScheduleBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminDeleteBlacklistScheduleResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/admin/sportVenue/{venue_id}/album": {
+      "get": {
+        "tags": [
+          "sportVenue"
+        ],
+        "summary": "Get venue photos",
+        "description": "Get Venue photos by admin",
+        "operationId": "getVenueAlbum",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "venue_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminGetAlbumResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "sportVenue"
+        ],
+        "summary": "Upload Photos for Venue Album",
+        "description": "Photos could be multiple",
+        "operationId": "uploadPhotosAlbum",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "venue_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminUploadPhotosResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/admin/sportVenue/{venue_id}/album/{filename}": {
+      "delete": {
+        "tags": [
+          "sportVenue"
+        ],
+        "summary": "Delete photo from venue album",
+        "description": "Delete photo from venue album",
+        "operationId": "deletePhotoVenueAlbum",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "venue_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filename",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminDeletePhotoFromAlbumResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/player/sportVenue": {
+      "post": {
+        "tags": [
+          "playerVenueInfo"
+        ],
+        "summary": "Return all of Venue list based on filter and sorting",
+        "description": "Return all of Venue list based on filter and sorting",
+        "operationId": "playerGetSportVenue",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Fill field with null values if not used, there are 2 sort kinds ('distance' or 'price')",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlayerGetSportVenueListBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerGetSportVenueListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/player/sportVenue/{venue_id}": {
+      "post": {
+        "tags": [
+          "playerVenueInfo"
+        ],
+        "summary": "Get detailed venue info by venue_id",
+        "description": "",
+        "operationId": "playerGetSportVenueDetail",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "venue_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "coordinate = pin coordinate player",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlayerGetSportVenueDetailBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerGetVenueDetailResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/player/sportVenue/{venue_id}/album": {
+      "get": {
+        "tags": [
+          "playerVenueInfo"
+        ],
+        "summary": "Get venue photos",
+        "description": "Get Venue photos by player",
+        "operationId": "getVenueAlbumPlayer",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "venue_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminGetAlbumResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/player/sportVenue/fields/{Sport_Venue_id}": {
+      "get": {
+        "tags": [
+          "playerVenueInfo"
+        ],
+        "summary": "Get List field from managed sport venue by admin",
+        "description": "Get List field from managed sport venue by admin",
+        "operationId": "playerGetFieldFromSportVenue",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Sport_Venue_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerGetFieldFromVenueResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/player/sportVenue/fields/schedule/blacklist/{field_id}/{month}/{year}": {
+      "get": {
+        "tags": [
+          "playerVenueInfo"
+        ],
+        "summary": "Get Blacklisted schedule in a month (with parameter year and month)",
+        "description": "Get Blacklisted schedule in a month (with parameter year and month)",
+        "operationId": "playerGetBlacklistSchedule",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "field_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerGetBlacklistScheduleResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/player/sportVenue/fields/schedule/reservation/{field_id}/{month}/{year}": {
+      "get": {
+        "tags": [
+          "playerVenueInfo"
+        ],
+        "summary": "Get Reservation schedule in a month (with parameter year and month)",
+        "description": "Get Reservation schedule in a month (with parameter year and month)",
+        "operationId": "playerGetReservationSchedule",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "field_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetReservationScheduleFieldsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/player/reservation": {
+      "post": {
+        "tags": [
+          "playerBooking"
+        ],
+        "summary": "Create a new booking",
+        "description": "Create a new booking",
+        "operationId": "playerCreateBooking",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlayerCreateBookingBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerCreateBookingResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/player/reservation/upload/{reservation_id}": {
+      "post": {
+        "tags": [
+          "playerBooking"
+        ],
+        "summary": "Upload payment credential photos",
+        "description": "Upload payment credential photos",
+        "operationId": "playerUploadBookingPayment",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reservation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "reservation id"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerUploadBookingCredentialResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/player/reservation/cancel/{reservation_id}": {
+      "put": {
+        "tags": [
+          "playerBooking"
+        ],
+        "summary": "Cancel reservation (before approved by admin)",
+        "description": "Only could cancel if booking_status = payment or waiting_approval, outside that would be rejected",
+        "operationId": "playerCancelReservation",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reservation_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerCancelReservationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/player/reservation/open/{reservation_id}/{is_open_member}": {
+      "put": {
+        "tags": [
+          "playerBooking"
+        ],
+        "summary": "Change condition is_open_member status of a reservation by Host",
+        "description": "Beside host cannot change condition of a reservation. Only approved reservation can open member",
+        "operationId": "playerOpenMemberReservation",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reservation_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "is_open_member",
+            "in": "path",
+            "required": true,
+            "description": "fill with 1 to change to True, 0 to False",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerCancelReservationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/player/reservation/public/{reservation_id}/{is_public}": {
+      "put": {
+        "tags": [
+          "playerBooking"
+        ],
+        "summary": "Change condition is_public status of a reservation by Host",
+        "description": "Beside host cannot change condition of a reservation. Only approved reservation can be public reservation",
+        "operationId": "playerChangePublicReservation",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reservation_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "is_public",
+            "in": "path",
+            "required": true,
+            "description": "fill with 1 to change to True, 0 to False",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerCancelReservationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/player/reservation/public/{sport_kind_id}/{mabar_type}/{sort_by}": {
+      "get": {
+        "tags": [
+          "playerBooking"
+        ],
+        "summary": "Get Public Reservation to join with",
+        "description": "With filter sport_kind, mabar_type, and sort_by distance or playing_date",
+        "operationId": "playerGetPublicReservation",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "geo_coordinate",
+            "in": "header",
+            "required": false,
+            "description": "Current device's location coordinate, you could fill with blank",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sport_kind_id",
+            "in": "path",
+            "required": true,
+            "description": "sport_kind_id can gotten with sport_kind routes. you could fill with 'all' if doesn't need this filter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mabar_type",
+            "in": "path",
+            "required": true,
+            "description": "friendly, competitive, or all",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort_by",
+            "in": "path",
+            "required": true,
+            "description": "distance or date",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerGetPublicReservationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/player/reservation/{booking_status}": {
+      "get": {
+        "tags": [
+          "playerBooking"
+        ],
+        "summary": "Get Player's own Reservation",
+        "description": "Get all reservation that player has ever created with filter booking_status",
+        "operationId": "playerGetPlayersOwnReservation",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "booking_status",
+            "in": "path",
+            "required": true,
+            "description": "payment / waiting_approval / approved / rejected / cancelled / all",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerGetPlayersOwnReservationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/player/reservation/joined/{sport_kind_id}": {
+      "get": {
+        "tags": [
+          "playerBooking"
+        ],
+        "summary": "Get Joined Reservation",
+        "description": "Get Reservation that player has been joined",
+        "operationId": "playerGetPlayersJoinedReservation",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sport_kind_id",
+            "in": "path",
+            "required": true,
+            "description": "sport_kind_id can gotten by sport_kinds route (or fill with 'all' if you don't want to use this filter)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerGetPlayersJoinedReservationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/admin/reservation/{booking_status}": {
+      "get": {
+        "tags": [
+          "adminBooking"
+        ],
+        "summary": "Get Reservation in all venue that he managed based on booking status",
+        "description": "Get Reservation in all venue that he managed based on booking status",
+        "operationId": "getBookingListAdmin",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "booking_status",
+            "in": "path",
+            "required": true,
+            "description": "option: payment, waiting_approval, approved, rejected, cancelled, all",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminGetReservationListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/admin/reservation/{venue_id}/{booking_status}": {
+      "get": {
+        "tags": [
+          "adminBooking"
+        ],
+        "summary": "Get Reservation in specific venue that he managed based on booking status",
+        "description": "Get Reservation in specific venue that he managed based on booking status",
+        "operationId": "getBookingListAdminInSpecificVenue",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "venue_id",
+            "in": "path",
+            "required": true,
+            "description": "venue_id that admin (in token) manage",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "booking_status",
+            "in": "path",
+            "required": true,
+            "description": "option: payment, waiting_approval, approved, rejected, cancelled, all",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminGetReservationListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/admin/reservation/detail/{reservation_id}": {
+      "get": {
+        "tags": [
+          "adminBooking"
+        ],
+        "summary": "Get Detailed Reservation based on id",
+        "description": "Get Detailed Reservation based on id",
+        "operationId": "getBookingDetailAdmin",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reservation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminGetReservationDetailResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/admin/reservation/status": {
+      "put": {
+        "tags": [
+          "adminBooking"
+        ],
+        "summary": "Edit booking_status of reservation/booking",
+        "description": "Edit booking_status of reservation/booking",
+        "operationId": "adminEditBookingStatus",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "option status: waiting_approval, approved, rejected, cancelled",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminEditBookingStatusBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminEditBookingStatusResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/controlsystem/hostinfo/{field_id}/{date}/{time}": {
+      "get": {
+        "tags": [
+          "venueControlSystem"
+        ],
+        "summary": "Check in a field is there any ongoing reservation or not",
+        "description": "Check by field_id, date, and time. Device/ESP would check every round hour (XX:00:00) and display host or mabar name in panel fields",
+        "operationId": "venueGetInfoScheduleOngoing",
+        "parameters": [
+          {
+            "name": "field_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "example": "a6d01bda-89b1-42b0-be6e-9164f5b8f03d",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "example": "2024-05-01",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "time",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "example": "14:00:00",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ControlSystemGetScheduleOngoingResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/controlsystem/unlock/{venue_id}/{reservation_id}": {
+      "get": {
+        "tags": [
+          "venueControlSystem"
+        ],
+        "summary": "Unlock venue door by venue_id and reservation_id that scanned from QR Code",
+        "description": "if venue, reservation, schedule date, arrival time with time open/close venue doesn't match, access to unlock not granted",
+        "operationId": "unlockDoorVenue",
+        "parameters": [
+          {
+            "name": "venue_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "example": "a6d01bda-89b1-42b0-be6e-9164f5b8f03d",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reservation_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "example": "a6d01bda-89b1-42b0-be6e-9164f5b8f03d",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ControlSystemUnlockVenueDoorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/player/reservation/join/{reservation_id}": {
+      "post": {
+        "tags": [
+          "memberManagement"
+        ],
+        "summary": "Join to a public reservation",
+        "description": "Join from a public reservation exploration",
+        "operationId": "playerJoinToPublicReservation",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reservation_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerJoinPublicReservationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/player/reservation/invite/{reservation_id}/{invited_username}": {
+      "post": {
+        "tags": [
+          "memberManagement"
+        ],
+        "summary": "Invite Player to reservation by Host",
+        "description": "Host could invite directly even is_open_member and is_public is False",
+        "operationId": "playerInviteToReservation",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reservation_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "invited_username",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerInviteToReservationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/player/reservation/members/{reservation_id}": {
+      "get": {
+        "tags": [
+          "memberManagement"
+        ],
+        "summary": "Get list of players in a reservation",
+        "description": "",
+        "operationId": "playerGetMembersOfReservation",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reservation_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerGetMemberOfReservationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/player/reservation/details/{reservation_id}": {
+      "get": {
+        "tags": [
+          "playerBooking"
+        ],
+        "summary": "Get details of reservation",
+        "description": "",
+        "operationId": "playerGetDetailsOfReservation",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reservation_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerGetReservationDetailResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/player/reservation/QR/{reservation_id}": {
+      "post": {
+        "tags": [
+          "playerBooking"
+        ],
+        "summary": "Post and Get a reservation QR",
+        "description": "Create new QR in cloud if never requested, and get a url to qr code. This QR is for door unlocking system",
+        "operationId": "playerGetQROfReservation",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reservation_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerGetReservationQRResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/player/reservation/kick/{reservation_id}/{username}": {
+      "delete": {
+        "tags": [
+          "memberManagement"
+        ],
+        "summary": "Remove a player from a reservation",
+        "description": "",
+        "operationId": "playerDeletePlayerFromReservation",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reservation_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerRemovePlayerFromReservationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/player/reservation/leave/{reservation_id}": {
+      "delete": {
+        "tags": [
+          "memberManagement"
+        ],
+        "summary": "Leave from a reservation",
+        "description": "",
+        "operationId": "playerLeaveFromReservation",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reservation_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerLeaveFromReservationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/player/reservation/match-history": {
+      "post": {
+        "tags": [
+          "matchHistory"
+        ],
+        "summary": "Create a new Match History",
+        "description": "Create new match history by host or member",
+        "operationId": "createNewMatchHistory",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Required",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlayerNewMatchHistoryBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerNewMatchHistoryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "not found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "matchHistory"
+        ],
+        "summary": "Edit number of a Match History",
+        "description": "Edit number of a match history by host or member",
+        "operationId": "editNumberMatchHistory",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Required",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlayerEditNumberMatchHistoryBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerEditNumberMatchHistoryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "not found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "matchHistory"
+        ],
+        "summary": "Delete a Match History",
+        "description": "Delete a match history by host or member",
+        "operationId": "deleteMatchHistory",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Required",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlayerDeleteMatchHistoryBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerDeleteMatchHistoryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "not found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        }
+      }
+    },
+    "/player/reservation/match-history/{reservation_id}": {
+      "get": {
+        "tags": [
+          "matchHistory"
+        ],
+        "summary": "Get Match Histories of a reservation",
+        "description": "Get Match Histories of a reservation by host or member",
+        "operationId": "getMatchHistories",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reservation_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerGetMatchHistoriesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "not found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        }
+      }
+    },
+    "/player/reservation/match-history/{reservation_id}/{match_history_id}": {
+      "get": {
+        "tags": [
+          "matchHistory"
+        ],
+        "summary": "Get Match History details",
+        "description": "Get Match History details by host or member",
+        "operationId": "getMatchHistortDetail",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reservation_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "match_history_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerGetMatchHistoryDetailResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "not found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        }
+      }
+    },
+    "/player/reservation/match-history/score": {
+      "put": {
+        "tags": [
+          "matchHistory"
+        ],
+        "summary": "Edit score of a Match History",
+        "description": "Edit score of a match history by host or member",
+        "operationId": "editScoreMatchHistory",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Required",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlayerEditScoreMatchHistoryBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerEditScoreMatchHistoryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "not found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        }
+      }
+    },
+    "/player/reservation/match-history/is_done": {
+      "put": {
+        "tags": [
+          "matchHistory"
+        ],
+        "summary": "Edit is_done status of a Match History",
+        "description": "Edit is_done status of a match history by host or member",
+        "operationId": "editIsDoneMatchHistory",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Required",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlayerEditIsDoneMatchHistoryBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerEditIsDoneMatchHistoryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "not found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        }
+      }
+    },
+    "/player/reservation/match-history/player": {
+      "post": {
+        "tags": [
+          "matchHistory"
+        ],
+        "summary": "Add a player to a match history",
+        "description": "Add a player to a match history (also to team a or team b)",
+        "operationId": "addMemberToAMatch",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Required",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlayerAddMemberToMatchHistoryBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerAddMemberToMatchHistoryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "not found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "matchHistory"
+        ],
+        "summary": "Remove a player from a match history",
+        "description": "Remove a player from a match history",
+        "operationId": "removeMemberFromAMatch",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Required",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlayerRemoveMemberFromMatchHistoryBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerRemoveMemberFromMatchHistoryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "not found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        }
+      }
+    },
+    "/user-info/{username}": {
+      "get": {
+        "tags": [
+          "userProfile"
+        ],
+        "summary": "Get user public information",
+        "description": "Get user public information",
+        "operationId": "getUserPublicInformation",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserPublicInformationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "not found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        }
+      }
+    },
+    "/user-info": {
+      "put": {
+        "tags": [
+          "userProfile"
+        ],
+        "summary": "Edit user public information",
+        "description": "Edit user public information",
+        "operationId": "editUserPublicInformation",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Field that you won't edit, fill the value with null",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditUserPublicInformationBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EditUserPublicInformationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "not found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        }
+      }
+    },
+    "/user-info/ava": {
+      "post": {
+        "tags": [
+          "userProfile"
+        ],
+        "summary": "Upload new user ava profile",
+        "description": "Upload new user ava profile",
+        "operationId": "uploadUserProfileAva",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadNewAvaResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/player/chatmatch": {
+      "post": {
+        "tags": [
+          "playerChat"
+        ],
+        "summary": "Post and Get a Chat Match with Admin",
+        "description": "Create new match chat with admin, if had already chated before, it will return existing chat match",
+        "operationId": "playerChatMatch",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Required",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlayerChatMatchBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerChatMatchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/sport_kinds": {
+      "get": {
+        "tags": [
+          "sportKind"
+        ],
+        "summary": "Return all of sport kinds exists",
+        "description": "Return all of sport kinds exists",
+        "operationId": "returnSportKinds",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SportKindResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DeviceRegisterResponse": {
+        "type": "object",
+        "properties": {
+          "register_status": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "virtual_device_id": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "DeviceRegisterResponse"
+        }
+      },
+      "DeviceDeleteBody": {
+        "type": "object",
+        "properties": {
+          "virtual_device_id": {
+            "type": "string"
+          }
+        },
+        "xml": {
+          "name": "DeviceDeleteBody"
+        }
+      },
+      "DeviceDeleteResponse": {
+        "type": "object",
+        "properties": {
+          "delete_status": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "xml": {
+          "name": "DeviceDeleteResponse"
+        }
+      },
+      "AdminDeleteVenueResponse": {
+        "type": "object",
+        "properties": {
+          "delete_status": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "venue_id": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "DeviceDeleteResponse"
+        }
+      },
+      "GetUserPublicInformationResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "ava_url": {
+                "type": "string"
+              },
+              "username": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "phone": {
+                "type": "string"
+              },
+              "role": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "GetUserPublicInformationResponse"
+        }
+      },
+      "PlayerRegisterBody": {
+        "required": [
+          "username",
+          "password",
+          "name",
+          "phone"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "devexample"
+          },
+          "password": {
+            "type": "string",
+            "example": "examplepass"
+          },
+          "name": {
+            "type": "string",
+            "example": "Dev Example"
+          },
+          "phone": {
+            "type": "string",
+            "example": "08123456789"
+          }
+        },
+        "xml": {
+          "name": "PlayerRegisterBody"
+        }
+      },
+      "PlayerRegisterResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "register_status": {
+            "type": "boolean"
+          }
+        },
+        "xml": {
+          "name": "PlayerRegisterResponse"
+        }
+      },
+      "PlayerLoginBody": {
+        "required": [
+          "username",
+          "password",
+          "virtual_device_id"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "devexample"
+          },
+          "password": {
+            "type": "string",
+            "example": "devexample"
+          },
+          "virtual_device_id": {
+            "type": "string",
+            "example": "some_device_id"
+          }
+        },
+        "xml": {
+          "name": "PlayerLoginBody"
+        }
+      },
+      "PlayerLoginResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "login_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "ava_url": {
+                "type": "string"
+              },
+              "username": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "phone": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerLoginResponse"
+        }
+      },
+      "ReloginResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "relogin_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "ava_url": {
+                "type": "string"
+              },
+              "username": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "phone": {
+                "type": "string"
+              },
+              "role": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "ReloginResponse"
+        }
+      },
+      "PlayerLogoutResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "logout_status": {
+            "type": "boolean"
+          }
+        },
+        "xml": {
+          "name": "PlayerLogoutResponse"
+        }
+      },
+      "AdminRegisterBody": {
+        "required": [
+          "username",
+          "password",
+          "name",
+          "phone"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "devexample"
+          },
+          "password": {
+            "type": "string",
+            "example": "examplepass"
+          },
+          "name": {
+            "type": "string",
+            "example": "Dev Example"
+          },
+          "phone": {
+            "type": "string",
+            "example": "08123456789"
+          }
+        },
+        "xml": {
+          "name": "AdminRegisterBody"
+        }
+      },
+      "AdminRegisterResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "register_status": {
+            "type": "boolean"
+          }
+        },
+        "xml": {
+          "name": "AdminRegisterResponse"
+        }
+      },
+      "AdminLoginBody": {
+        "required": [
+          "username",
+          "password",
+          "virtual_device_id"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "devexample"
+          },
+          "password": {
+            "type": "string",
+            "example": "devexample"
+          },
+          "virtual_device_id": {
+            "type": "string",
+            "example": "some_device_id"
+          }
+        },
+        "xml": {
+          "name": "AdminLoginBody"
+        }
+      },
+      "AdminLoginResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "login_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "ava_url": {
+                "type": "string"
+              },
+              "username": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "phone": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "AdminLoginResponse"
+        }
+      },
+      "AdminLogoutResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "logout_status": {
+            "type": "boolean"
+          }
+        },
+        "xml": {
+          "name": "AdminLogoutResponse"
+        }
+      },
+      "AdminRegisterVenueBody": {
+        "required": [
+          "Sport_Kind_id",
+          "name",
+          "geo_coordinate",
+          "is_bike_parking",
+          "is_car_parking",
+          "is_public",
+          "description",
+          "rules",
+          "time_open",
+          "time_closed",
+          "price_per_hour"
+        ],
+        "type": "object",
+        "properties": {
+          "Sport_Kind_id": {
+            "type": "string",
+            "example": "c234176a-d3e0-11ee-921f-02284a7d1cf2"
+          },
+          "name": {
+            "type": "string",
+            "example": "Gor Gears"
+          },
+          "geo_coordinate": {
+            "type": "string",
+            "example": "-6.300012, 107.164228"
+          },
+          "is_bike_parking": {
+            "type": "boolean",
+            "example": true
+          },
+          "is_car_parking": {
+            "type": "boolean",
+            "example": true
+          },
+          "is_public": {
+            "type": "boolean",
+            "example": false
+          },
+          "description": {
+            "type": "string",
+            "example": "Lapang Badminton dengan 3 lapang yang sudah menggunakan karpet sintetis"
+          },
+          "rules": {
+            "type": "string",
+            "example": "Wajib menggunakan sepatu badminton, tidak boleh menggunakan sepatu berdebu"
+          },
+          "time_open": {
+            "type": "string",
+            "example": "08:00:00"
+          },
+          "time_closed": {
+            "type": "string",
+            "example": "23:00:00"
+          },
+          "price_per_hour": {
+            "type": "integer",
+            "example": 40000
+          }
+        },
+        "xml": {
+          "name": "AdminRegisterVenueBody"
+        }
+      },
+      "AdminRegisterVenueResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "register_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "Sport_Kind_id": {
+                "type": "string"
+              },
+              "Sport_Kind_Name": {
+                "type": "string"
+              },
+              "created_at": {
+                "type": "string"
+              },
+              "last_edited": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "rules": {
+                "type": "string"
+              },
+              "geo_coordinate": {
+                "type": "string"
+              },
+              "is_bike_parking": {
+                "type": "boolean"
+              },
+              "is_car_parking": {
+                "type": "boolean"
+              },
+              "is_public": {
+                "type": "boolean"
+              },
+              "name": {
+                "type": "string"
+              },
+              "time_open": {
+                "type": "string"
+              },
+              "time_closed": {
+                "type": "string"
+              },
+              "price_per_hour": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "AdminRegisterVenueResponse"
+        }
+      },
+      "AdminGetFieldFromVenueResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "get_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "Sport_Field_id": {
+                  "type": "string"
+                },
+                "number": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "AdminGetFieldFromVenueResponse"
+        }
+      },
+      "PlayerGetFieldFromVenueResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "get_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "Sport_Field_id": {
+                  "type": "string"
+                },
+                "number": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerGetFieldFromVenueResponse"
+        }
+      },
+      "AdminAddFieldToVenueBody": {
+        "required": [
+          "Sport_Venue_id",
+          "field_number"
+        ],
+        "type": "object",
+        "properties": {
+          "Sport_Venue_id": {
+            "type": "string",
+            "example": "d28aa20b-d982-4b53-b56d-7307a4410339"
+          },
+          "field_number": {
+            "type": "integer",
+            "example": 1
+          }
+        },
+        "xml": {
+          "name": "AdminAddFieldToVenueBody"
+        }
+      },
+      "AdminAddFieldToVenueResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "add_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "Sport_Field_id": {
+                  "type": "string"
+                },
+                "number": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "AdminAddFieldToVenueResponse"
+        }
+      },
+      "AdminDeleteFieldFromVenueBody": {
+        "required": [
+          "Sport_Venue_id",
+          "field_id"
+        ],
+        "type": "object",
+        "properties": {
+          "Sport_Venue_id": {
+            "type": "string",
+            "example": "d28aa20b-d982-4b53-b56d-7307a4410339"
+          },
+          "field_id": {
+            "type": "string",
+            "example": "h22aa20b-d982-4b53-b56d-7307a4410339"
+          }
+        },
+        "xml": {
+          "name": "AdminDeleteFieldFromVenueBody"
+        }
+      },
+      "AdminDeleteFieldFromVenueResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "delete_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "Sport_Field_id": {
+                  "type": "string"
+                },
+                "number": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "AdminDeleteFieldFromVenueResponse"
+        }
+      },
+      "AdminGetVenueResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "get_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "Sport_Kind_Name": {
+                  "type": "string"
+                },
+                "is_public": {
+                  "type": "boolean"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "price_per_hour": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "AdminGetVenueResponse"
+        }
+      },
+      "AdminGetVenueDetailResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "get_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "Sport_Kind_id": {
+                "type": "string"
+              },
+              "Sport_Kind_Name": {
+                "type": "string"
+              },
+              "created_at": {
+                "type": "string"
+              },
+              "last_edited": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "rules": {
+                "type": "string"
+              },
+              "geo_coordinate": {
+                "type": "string"
+              },
+              "is_bike_parking": {
+                "type": "boolean"
+              },
+              "is_car_parking": {
+                "type": "boolean"
+              },
+              "is_public": {
+                "type": "boolean"
+              },
+              "name": {
+                "type": "string"
+              },
+              "time_open": {
+                "type": "string"
+              },
+              "time_closed": {
+                "type": "string"
+              },
+              "price_per_hour": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "AdminGetVenueDetailResponse"
+        }
+      },
+      "PlayerGetVenueDetailResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "get_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "admin_username": {
+                "type": "string"
+              },
+              "Sport_Kind_id": {
+                "type": "string"
+              },
+              "Sport_Kind_Name": {
+                "type": "string"
+              },
+              "created_at": {
+                "type": "string"
+              },
+              "last_edited": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "rules": {
+                "type": "string"
+              },
+              "geo_coordinate": {
+                "type": "string"
+              },
+              "distance": {
+                "type": "float"
+              },
+              "is_bike_parking": {
+                "type": "boolean"
+              },
+              "is_car_parking": {
+                "type": "boolean"
+              },
+              "is_public": {
+                "type": "boolean"
+              },
+              "name": {
+                "type": "string"
+              },
+              "time_open": {
+                "type": "string"
+              },
+              "time_closed": {
+                "type": "string"
+              },
+              "price_per_hour": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerGetVenueDetailResponse"
+        }
+      },
+      "AdminEditVenueBody": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "d28aa20b-d982-4b53-b56d-7307a4410339"
+          },
+          "Sport_Kind_id": {
+            "type": "string",
+            "example": "2b607252-3c94-432f-9275-a86304363cf3"
+          },
+          "name": {
+            "type": "string",
+            "example": "Gor Gears"
+          },
+          "geo_coordinate": {
+            "type": "string",
+            "example": null
+          },
+          "is_bike_parking": {
+            "type": "boolean",
+            "example": true
+          },
+          "is_car_parking": {
+            "type": "boolean",
+            "example": true
+          },
+          "is_public": {
+            "type": "boolean",
+            "example": false
+          },
+          "description": {
+            "type": "string",
+            "example": "Lapang Badminton dengan 3 lapang yang sudah menggunakan karpet sintetis"
+          },
+          "rules": {
+            "type": "string",
+            "example": "Wajib menggunakan sepatu badminton, tidak boleh menggunakan sepatu berdebu"
+          },
+          "time_open": {
+            "type": "string",
+            "example": null
+          },
+          "time_closed": {
+            "type": "string",
+            "example": null
+          },
+          "price_per_hour": {
+            "type": "integer",
+            "example": 37500
+          }
+        },
+        "xml": {
+          "name": "AdminEditVenueBody"
+        }
+      },
+      "AdminEditVenueResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "edit_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "Sport_Kind_id": {
+                "type": "string"
+              },
+              "Sport_Kind_Name": {
+                "type": "string"
+              },
+              "created_at": {
+                "type": "string"
+              },
+              "last_edited": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "rules": {
+                "type": "string"
+              },
+              "geo_coordinate": {
+                "type": "string"
+              },
+              "is_bike_parking": {
+                "type": "boolean"
+              },
+              "is_car_parking": {
+                "type": "boolean"
+              },
+              "is_public": {
+                "type": "boolean"
+              },
+              "name": {
+                "type": "string"
+              },
+              "time_open": {
+                "type": "string"
+              },
+              "time_closed": {
+                "type": "string"
+              },
+              "price_per_hour": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "AdminEditVenueResponse"
+        }
+      },
+      "AdminAddBlacklistScheduleBody": {
+        "required": [
+          "Field_id",
+          "date",
+          "fromTime",
+          "toTime",
+          "is_every_week",
+          "reason"
+        ],
+        "type": "object",
+        "properties": {
+          "Field_id": {
+            "type": "string",
+            "example": "d28aa20b-d982-4b53-b56d-7307a4410339"
+          },
+          "date": {
+            "type": "string",
+            "example": "2024-03-29"
+          },
+          "fromTime": {
+            "type": "string",
+            "example": "08:00:00"
+          },
+          "toTime": {
+            "type": "string",
+            "example": "13:00:00"
+          },
+          "is_every_week": {
+            "type": "boolean",
+            "example": true
+          },
+          "reason": {
+            "type": "string",
+            "example": "Jadwal Sholat Jumat"
+          }
+        },
+        "xml": {
+          "name": "AdminAddBlacklistScheduleBody"
+        }
+      },
+      "AdminAddBlacklistScheduleResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "blacklist_status": {
+            "type": "boolean"
+          }
+        },
+        "xml": {
+          "name": "AdminAddBlacklistScheduleResponse"
+        }
+      },
+      "AdminGetBlacklistScheduleResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "get_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "blacklist_id": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": "string"
+                },
+                "fromTime": {
+                  "type": "string"
+                },
+                "toTime": {
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "AdminGetBlacklistScheduleResponse"
+        }
+      },
+      "AdminGetAlbumResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "get_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "venue_id": {
+                  "type": "string"
+                },
+                "filename": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "uploaded_at": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "AdminGetAlbumResponse"
+        }
+      },
+      "AdminUploadPhotosResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "upload_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "venue_id": {
+                  "type": "string"
+                },
+                "filename": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "uploaded_at": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "AdminUploadPhotosResponse"
+        }
+      },
+      "AdminDeletePhotoFromAlbumResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "delete_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "venue_id": {
+                  "type": "string"
+                },
+                "filename": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "uploaded_at": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "AdminDeletePhotoFromAlbumResponse"
+        }
+      },
+      "PlayerGetBlacklistScheduleResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "get_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "blacklist_id": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": "string"
+                },
+                "fromTime": {
+                  "type": "string"
+                },
+                "toTime": {
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerGetBlacklistScheduleResponse"
+        }
+      },
+      "GetReservationScheduleFieldsResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "get_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "Field_id": {
+                  "type": "string"
+                },
+                "Player_username": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "mabar_type": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": "string"
+                },
+                "time_start": {
+                  "type": "string"
+                },
+                "time_end": {
+                  "type": "string"
+                },
+                "booking_status": {
+                  "type": "string"
+                },
+                "payment_credential_url": {
+                  "type": "string"
+                },
+                "is_public": {
+                  "type": "string"
+                },
+                "is_open_member": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "GetReservationScheduleFieldsResponse"
+        }
+      },
+      "AdminDeleteBlacklistScheduleBody": {
+        "required": [
+          "blacklist_id"
+        ],
+        "type": "object",
+        "properties": {
+          "blacklist_id": {
+            "type": "string",
+            "example": "d28aa20b-d982-4b53-b56d-7307a4410339"
+          }
+        },
+        "xml": {
+          "name": "AdminDeleteBlacklistScheduleBody"
+        }
+      },
+      "AdminDeleteBlacklistScheduleResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "delete_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "deleted_blacklist": {
+                "type": "object",
+                "properties": {
+                  "blacklist_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "AdminGetBlacklistScheduleResponse"
+        }
+      },
+      "PlayerUploadBookingCredentialResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "upload_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "url_image": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerUploadBookingCredentialResponse"
+        }
+      },
+      "PlayerJoinPublicReservationResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "join_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "reservation_id": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerJoinPublicReservationResponse"
+        }
+      },
+      "PlayerInviteToReservationResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "invite_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "reservation_id": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerInviteToReservationResponse"
+        }
+      },
+      "PlayerGetSportVenueListBody": {
+        "type": "object",
+        "properties": {
+          "is_car_parking": {
+            "type": "boolean",
+            "example": false
+          },
+          "is_bike_parking": {
+            "type": "boolean",
+            "example": true
+          },
+          "name": {
+            "type": "string",
+            "example": null
+          },
+          "Sport_Kind_id": {
+            "type": "string",
+            "example": null
+          },
+          "sort_by": {
+            "type": "string",
+            "example": "distance"
+          },
+          "coordinate": {
+            "type": "string",
+            "example": "-6.894797, 107.610590"
+          }
+        },
+        "xml": {
+          "name": "PlayerGetSportVenueListBody"
+        }
+      },
+      "PlayerGetSportVenueDetailBody": {
+        "type": "object",
+        "properties": {
+          "coordinate": {
+            "type": "string",
+            "example": "-6.894797, 107.610590"
+          }
+        },
+        "xml": {
+          "name": "PlayerGetSportVenueDetailBody"
+        }
+      },
+      "PlayerGetSportVenueListResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "get_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "Sport_Kind_Name": {
+                  "type": "string"
+                },
+                "geo_coordinate": {
+                  "type": "string"
+                },
+                "distance": {
+                  "type": "float"
+                },
+                "is_bike_parking": {
+                  "type": "boolean"
+                },
+                "is_car_parking": {
+                  "type": "boolean"
+                },
+                "is_public": {
+                  "type": "boolean"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "price_per_hour": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerGetSportVenueListResponse"
+        }
+      },
+      "EditUserPublicInformationBody": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "example_new_username"
+          },
+          "phone": {
+            "type": "string",
+            "example": null
+          },
+          "name": {
+            "type": "string",
+            "example": "New Name"
+          }
+        },
+        "xml": {
+          "name": "EditUserPublicInformationBody"
+        }
+      },
+      "EditUserPublicInformationResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "username": {
+                "type":"string"
+              },
+              "name": {
+                "type":"string"
+              },
+              "phone": {
+                "type":"string"
+              },
+              "ava_url": {
+                "type":"string"
+              },
+              "role": {
+                "type":"string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "EditUserPublicInformationResponse"
+        }
+      },
+      "UploadNewAvaResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "username": {
+                "type":"string"
+              },
+              "name": {
+                "type":"string"
+              },
+              "phone": {
+                "type":"string"
+              },
+              "ava_url": {
+                "type":"string"
+              },
+              "role": {
+                "type":"string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "UploadNewAvaResponse"
+        }
+      },
+      "AdminGetReservationListResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "get_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "field_id": {
+                  "type": "string"
+                },
+                "field_number": {
+                  "type": "integer"
+                },
+                "host_name": {
+                  "type": "string"
+                },
+                "mabar_name": {
+                  "type": "string"
+                },
+                "playing_date": {
+                  "type": "string"
+                },
+                "reservation_id": {
+                  "type": "string"
+                },
+                "sport_kind_id": {
+                  "type": "string"
+                },
+                "sport_kind_name": {
+                  "type": "string"
+                },
+                "time_end": {
+                  "type": "string"
+                },
+                "time_start": {
+                  "type": "string"
+                },
+                "total_price": {
+                  "type": "integer"
+                },
+                "venue_id": {
+                  "type": "string"
+                },
+                "venue_name": {
+                  "type": "string"
+                },
+                "booking_status": {
+                  "type": "string"
+                },
+                "created_at": {
+                  "type": "string"
+                },
+                "booking_creation_age_hour": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "AdminGetReservationListResponse"
+        }
+      },
+      "AdminGetReservationDetailResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "get_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "field_id": {
+                "type": "string"
+              },
+              "field_number": {
+                "type": "integer"
+              },
+              "host_name": {
+                "type": "string"
+              },
+              "mabar_name": {
+                "type": "string"
+              },
+              "playing_date": {
+                "type": "string"
+              },
+              "reservation_id": {
+                "type": "string"
+              },
+              "sport_kind_id": {
+                "type": "string"
+              },
+              "sport_kind_name": {
+                "type": "string"
+              },
+              "time_end": {
+                "type": "string"
+              },
+              "time_start": {
+                "type": "string"
+              },
+              "total_price": {
+                "type": "integer"
+              },
+              "venue_id": {
+                "type": "string"
+              },
+              "venue_name": {
+                "type": "string"
+              },
+              "booking_status": {
+                "type": "string"
+              },
+              "payment_credential_url": {
+                "type": "string"
+              },
+              "upload_payment_timestamp": {
+                "type": "string"
+              },
+              "created_at": {
+                "type": "string"
+              },
+              "booking_creation_age_hour": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "AdminGetReservationDetailResponse"
+        }
+      },
+      "PlayerGetReservationDetailResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "get_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "role": {
+                "type": "string"
+              },
+              "info": {
+                "type": "object",
+                "properties": {
+                  "field_id": {
+                    "type": "string"
+                  },
+                  "field_number": {
+                    "type": "integer"
+                  },
+                  "host_name": {
+                    "type": "string"
+                  },
+                  "mabar_name": {
+                    "type": "string"
+                  },
+                  "playing_date": {
+                    "type": "string"
+                  },
+                  "reservation_id": {
+                    "type": "string"
+                  },
+                  "sport_kind_id": {
+                    "type": "string"
+                  },
+                  "sport_kind_name": {
+                    "type": "string"
+                  },
+                  "time_end": {
+                    "type": "string"
+                  },
+                  "time_start": {
+                    "type": "string"
+                  },
+                  "total_price": {
+                    "type": "integer"
+                  },
+                  "venue_id": {
+                    "type": "string"
+                  },
+                  "venue_name": {
+                    "type": "string"
+                  },
+                  "booking_status": {
+                    "type": "string"
+                  },
+                  "payment_credential_url": {
+                    "type": "string"
+                  },
+                  "upload_payment_timestamp": {
+                    "type": "string"
+                  },
+                  "created_at": {
+                    "type": "string"
+                  },
+                  "is_public": {
+                    "type": "boolean"
+                  },
+                  "is_open_member": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerGetReservationDetailResponse"
+        }
+      },
+      "PlayerCreateBookingBody": {
+        "required": [
+          "field_id",
+          "name",
+          "mabar_type",
+          "date",
+          "time_start",
+          "time_end"
+        ],
+        "type": "object",
+        "properties": {
+          "field_id": {
+            "type": "string",
+            "example": "d28aa20b-d982-4b53-b56d-7307a4410339"
+          },
+          "name": {
+            "type": "string",
+            "example": "Mabar Anak Kece HMIF"
+          },
+          "mabar_type": {
+            "type": "string",
+            "description": "Could be filled with 'competitive' or 'friendly'",
+            "example": "competitive"
+          },
+          "date": {
+            "type": "string",
+            "example": "2024-03-20"
+          },
+          "time_start": {
+            "type": "string",
+            "description": "minutes and seconds always 00",
+            "example": "08:00:00"
+          },
+          "time_end": {
+            "type": "string",
+            "description": "minutes and seconds always 59",
+            "example": "13:59:59"
+          }
+        },
+        "xml": {
+          "name": "PlayerCreateBookingBody"
+        }
+      },
+      "PlayerCreateBookingResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "create_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "Field_id": {
+                "type": "string"
+              },
+              "Player_username": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "mabar_type": {
+                "type": "string"
+              },
+              "date": {
+                "type": "string"
+              },
+              "time_start": {
+                "type": "string"
+              },
+              "time_end": {
+                "type": "string"
+              },
+              "booking_status": {
+                "type": "string"
+              },
+              "payment_credential_url": {
+                "type": "string"
+              },
+              "is_public": {
+                "type": "boolean"
+              },
+              "is_open_member": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerCreateBookingResponse"
+        }
+      },
+      "AdminEditBookingStatusBody": {
+        "required": [
+          "reservation_id",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "reservation_id": {
+            "type": "string",
+            "example": "6d9aff9b-3422-4022-9092-8f6b70e00087"
+          },
+          "status": {
+            "type": "string",
+            "description": "option: waiting_approval, approved, rejected, cancelled",
+            "example": "rejected"
+          }
+        },
+        "xml": {
+          "name": "AdminEditBookingStatusBody"
+        }
+      },
+      "AdminEditBookingStatusResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "edit_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "reservation_id": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "AdminEditBookingStatusResponse"
+        }
+      },
+      "PlayerChatMatchBody": {
+        "required": [
+          "admin_username"
+        ],
+        "type": "object",
+        "properties": {
+          "admin_username": {
+            "type": "string",
+            "example": "admin_huehue"
+          }
+        },
+        "xml": {
+          "name": "PlayerChatMatchBody"
+        }
+      },
+      "PlayerChatMatchResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id_chat_match": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerChatMatchResponse"
+        }
+      },
+      "PlayerNewMatchHistoryBody": {
+        "required": [
+          "reservation_id",
+          "match_number"
+        ],
+        "type": "object",
+        "properties": {
+          "reservation_id": {
+            "type": "string",
+            "example": "8239dc8d-8db0-4768-a3bf-18f238fc2655"
+          },
+          "match_number": {
+            "type": "integer",
+            "example": 1
+          }
+        },
+        "xml": {
+          "name": "PlayerNewMatchHistoryBody"
+        }
+      },
+      "PlayerNewMatchHistoryResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "match_history_id": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerNewMatchHistoryResponse"
+        }
+      },
+      "PlayerDeleteMatchHistoryBody": {
+        "required": [
+          "reservation_id",
+          "match_history_id"
+        ],
+        "type": "object",
+        "properties": {
+          "reservation_id": {
+            "type": "string",
+            "example": "8239dc8d-8db0-4768-a3bf-18f238fc2655"
+          },
+          "match_history_id": {
+            "type": "string",
+            "example": "8239dc8d-8db0-4768-a3bf-hnfwin121321"
+          }
+        },
+        "xml": {
+          "name": "PlayerDeleteMatchHistoryBody"
+        }
+      },
+      "PlayerDeleteMatchHistoryResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "deleted_match_history_id": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerDeleteMatchHistoryResponse"
+        }
+      },
+      "PlayerEditNumberMatchHistoryBody": {
+        "required": [
+          "reservation_id",
+          "match_history_id",
+          "new_number"
+        ],
+        "type": "object",
+        "properties": {
+          "reservation_id": {
+            "type": "string",
+            "example": "8239dc8d-8db0-4768-a3bf-18f238fc2655"
+          },
+          "match_history_id": {
+            "type": "string",
+            "example": "8239dc8d-8db0-4768-a3bf-hnfwin121321"
+          },
+          "new_number": {
+            "type": "integer",
+            "example": 1
+          }
+        },
+        "xml": {
+          "name": "PlayerEditNumberMatchHistoryBody"
+        }
+      },
+      "PlayerEditNumberMatchHistoryResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "match_history_id": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerEditNumberMatchHistoryResponse"
+        }
+      },
+      "PlayerEditScoreMatchHistoryBody": {
+        "required": [
+          "reservation_id",
+          "match_history_id",
+          "score_a",
+          "score_b"
+        ],
+        "type": "object",
+        "properties": {
+          "reservation_id": {
+            "type": "string",
+            "example": "8239dc8d-8db0-4768-a3bf-18f238fc2655"
+          },
+          "match_history_id": {
+            "type": "string",
+            "example": "8239dc8d-8db0-4768-a3bf-hnfwin121321"
+          },
+          "score_a": {
+            "type": "integer",
+            "example": 21
+          },
+          "score_b": {
+            "type": "integer",
+            "example": 18
+          }
+        },
+        "xml": {
+          "name": "PlayerEditScoreMatchHistoryBody"
+        }
+      },
+      "PlayerEditScoreMatchHistoryResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "match_history_id": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerEditScoreMatchHistoryResponse"
+        }
+      },
+      "PlayerEditIsDoneMatchHistoryBody": {
+        "required": [
+          "reservation_id",
+          "match_history_id",
+          "is_done"
+        ],
+        "type": "object",
+        "properties": {
+          "reservation_id": {
+            "type": "string",
+            "example": "8239dc8d-8db0-4768-a3bf-18f238fc2655"
+          },
+          "match_history_id": {
+            "type": "string",
+            "example": "8239dc8d-8db0-4768-a3bf-hnfwin121321"
+          },
+          "is_done": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "xml": {
+          "name": "PlayerEditIsDoneMatchHistoryBody"
+        }
+      },
+      "PlayerEditIsDoneMatchHistoryResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "match_history_id": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerEditIsDoneMatchHistoryResponse"
+        }
+      },
+      "PlayerAddMemberToMatchHistoryBody": {
+        "required": [
+          "reservation_id",
+          "match_history_id",
+          "username",
+          "team"
+        ],
+        "type": "object",
+        "properties": {
+          "reservation_id": {
+            "type": "string",
+            "example": "8239dc8d-8db0-4768-a3bf-18f238fc2655"
+          },
+          "match_history_id": {
+            "type": "string",
+            "example": "8239dc8d-8db0-4768-a3bf-hnfwin121321"
+          },
+          "username": {
+            "type": "string",
+            "example": "acoolusername"
+          },
+          "team": {
+            "type": "string",
+            "example": "a"
+          }
+        },
+        "xml": {
+          "name": "PlayerAddMemberToMatchHistoryBody"
+        }
+      },
+      "PlayerAddMemberToMatchHistoryResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "match_history_id": {
+                "type": "string"
+              },
+              "username": {
+                "type": "string"
+              },
+              "team": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerAddMemberToMatchHistoryResponse"
+        }
+      },
+      "PlayerRemoveMemberFromMatchHistoryBody": {
+        "required": [
+          "reservation_id",
+          "match_history_id",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "reservation_id": {
+            "type": "string",
+            "example": "8239dc8d-8db0-4768-a3bf-18f238fc2655"
+          },
+          "match_history_id": {
+            "type": "string",
+            "example": "8239dc8d-8db0-4768-a3bf-hnfwin121321"
+          },
+          "username": {
+            "type": "string",
+            "example": "acoolusername"
+          }
+        },
+        "xml": {
+          "name": "PlayerRemoveMemberFromMatchHistoryBody"
+        }
+      },
+      "PlayerRemoveMemberFromMatchHistoryResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "match_history_id": {
+                "type": "string"
+              },
+              "username_removed": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerRemoveMemberFromMatchHistoryResponse"
+        }
+      },
+      "PlayerGetMatchHistoriesResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "match_id": {
+                  "type": "string"
+                },
+                "reservation_id": {
+                  "type": "string"
+                },
+                "number": {
+                  "type": "integer"
+                },
+                "score_a": {
+                  "type": "integer"
+                },
+                "score_b": {
+                  "type": "integer"
+                },
+                "is_done": {
+                  "type": "boolean"
+                },
+                "created_at": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerGetMatchHistoriesResponse"
+        }
+      },
+      "PlayerGetMatchHistoryDetailResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "match_history_id": {
+                "type": "string"
+              },
+              "reservation_id": {
+                "type": "string"
+              },
+              "number": {
+                "type": "integer"
+              },
+              "score_a": {
+                "type": "integer"
+              },
+              "score_b": {
+                "type": "integer"
+              },
+              "is_done": {
+                "type": "boolean"
+              },
+              "team_a": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "team_b": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerGetMatchHistoryDetailResponse"
+        }
+      },
+      "PlayerCancelReservationResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "edit_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "reservation_id": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerCancelReservationResponse"
+        }
+      },
+      "PlayerGetPublicReservationResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "get_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "count_member": {
+                  "type": "integer"
+                },
+                "distance": {
+                  "type": "number"
+                },
+                "field_id": {
+                  "type": "string"
+                },
+                "field_number": {
+                  "type": "integer"
+                },
+                "host_name": {
+                  "type": "string"
+                },
+                "mabar_name": {
+                  "type": "string"
+                },
+                "playing_date": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "reservation_id": {
+                  "type": "string"
+                },
+                "sport_kind_id": {
+                  "type": "string"
+                },
+                "sport_kind_name": {
+                  "type": "string"
+                },
+                "time_start": {
+                  "type": "string",
+                  "format": "time"
+                },
+                "time_end": {
+                  "type": "string",
+                  "format": "time"
+                },
+                "venue_id": {
+                  "type": "string"
+                },
+                "venue_name": {
+                  "type": "string"
+                },
+                "is_open_member": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerGetPublicReservationResponse"
+        }
+      },
+      "PlayerGetPlayersOwnReservationResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "get_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "count_member": {
+                  "type": "integer"
+                },
+                "field_id": {
+                  "type": "string"
+                },
+                "field_number": {
+                  "type": "integer"
+                },
+                "host_name": {
+                  "type": "string"
+                },
+                "mabar_name": {
+                  "type": "string"
+                },
+                "playing_date": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "reservation_id": {
+                  "type": "string"
+                },
+                "booking_status": {
+                  "type": "string"
+                },
+                "sport_kind_id": {
+                  "type": "string"
+                },
+                "sport_kind_name": {
+                  "type": "string"
+                },
+                "time_start": {
+                  "type": "string",
+                  "format": "time"
+                },
+                "time_end": {
+                  "type": "string",
+                  "format": "time"
+                },
+                "venue_id": {
+                  "type": "string"
+                },
+                "venue_name": {
+                  "type": "string"
+                },
+                "is_open_member": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerGetPlayersOwnReservationResponse"
+        }
+      },
+      "PlayerGetPlayersJoinedReservationResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "get_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "count_member": {
+                  "type": "integer"
+                },
+                "field_id": {
+                  "type": "string"
+                },
+                "field_number": {
+                  "type": "integer"
+                },
+                "host_name": {
+                  "type": "string"
+                },
+                "mabar_name": {
+                  "type": "string"
+                },
+                "playing_date": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "reservation_id": {
+                  "type": "string"
+                },
+                "sport_kind_id": {
+                  "type": "string"
+                },
+                "sport_kind_name": {
+                  "type": "string"
+                },
+                "time_start": {
+                  "type": "string",
+                  "format": "time"
+                },
+                "time_end": {
+                  "type": "string",
+                  "format": "time"
+                },
+                "venue_id": {
+                  "type": "string"
+                },
+                "venue_name": {
+                  "type": "string"
+                },
+                "is_open_member": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerGetPlayersJoinedReservationResponse"
+        }
+      },
+      "PlayerGetMemberOfReservationResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "get_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "role": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerGetMemberOfReservationResponse"
+        }
+      },
+      "ControlSystemGetScheduleOngoingResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "get_status": {
+            "type": "boolean"
+          },
+          "is_there_a_schedule": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "host": {
+                "type": "string"
+              },
+              "mabar_name": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "ControlSystemGetScheduleOngoingResponse"
+        }
+      },
+      "ControlSystemUnlockVenueDoorResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "unlock_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "reservation_id": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "ControlSystemUnlockVenueDoorResponse"
+        }
+      },
+      "PlayerRemovePlayerFromReservationResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "kick_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "reservation_id": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerRemovePlayerFromReservationResponse"
+        }
+      },
+      "PlayerLeaveFromReservationResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "leave_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "reservation_id": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerLeaveFromReservationResponse"
+        }
+      },
+      "PlayerGetReservationQRResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "get_status": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "url_qr": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "PlayerGetReservationQRResponse"
+        }
+      },
+      "SportKindResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "status_get": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "SportKindResponse"
+        }
+      }
+    }
+  }
+}
